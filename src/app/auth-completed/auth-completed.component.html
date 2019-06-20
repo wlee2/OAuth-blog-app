@@ -1,0 +1,10 @@
+
+<ng-container *ngIf="expression; else elseTemplate">
+<p>
+  You are Authorized!
+</p>
+  
+</ng-container>
+<ng-template #elseTemplate>
+  Fail to Authorized
+</ng-template>
