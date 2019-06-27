@@ -1,0 +1,9 @@
+@mixin space-start-to-end {
+    flex: 1 1 auto;
+}
+
+@mixin toolbar-icon-size {
+    font-size: 18px;
+}
+
+$media-max-break: 800px;

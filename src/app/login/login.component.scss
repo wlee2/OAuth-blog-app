@@ -1,0 +1,21 @@
+@import '../styles/color';
+
+.facebook-login {
+    background-color: white;
+    color: $facebook-color;
+    font-size: 18px;
+}
+
+.user-status {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.user-avatar {
+    border-radius: 100%;
+}
+
+.menu-item {
+    font-weight: bold;
+}
+

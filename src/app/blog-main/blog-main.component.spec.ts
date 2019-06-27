@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AuthCompletedComponent } from './auth-completed.component';
+import { BlogMainComponent } from './blog-main.component';
 
-describe('AuthCompletedComponent', () => {
-  let component: AuthCompletedComponent;
-  let fixture: ComponentFixture<AuthCompletedComponent>;
+describe('BlogMainComponent', () => {
+  let component: BlogMainComponent;
+  let fixture: ComponentFixture<BlogMainComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AuthCompletedComponent ]
+      declarations: [ BlogMainComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AuthCompletedComponent);
+    fixture = TestBed.createComponent(BlogMainComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

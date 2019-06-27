@@ -1,13 +1,27 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
-import { AuthCompletedComponent } from './auth-completed/auth-completed.component';
+import { BlogComponent } from './blog/blog.component';
+import { AuthGuard } from './services/auth.guard';
+import { BlogContentsComponent } from './blog-contents/blog-contents.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { BlogMainComponent } from './blog-main/blog-main.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'auth', component: AuthCompletedComponent }
+  {
+    path: 'blog', component: BlogComponent,
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: 'view/:id', component: BlogContentsComponent, outlet: 'blogOutlet'
+      },
+      {
+        path: '', component: BlogMainComponent, outlet: 'blogOutlet'
+      }
+    ]
+  },
+  { path: '**', component: PageNotFoundComponent }
 ];
 
 @NgModule({

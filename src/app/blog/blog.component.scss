@@ -1,0 +1,16 @@
+@import "../styles/layout";
+
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+.side-nav {
+  width: 300px;
+}
+.contents {
+  padding: 20px 50px 50px 20px;
+}
+.icon {
+  @include toolbar-icon-size;
+}

@@ -3,4 +3,5 @@ export class Auth {
     provider: string;
     haslocalaccount: boolean;
     external_user_name: string;
+    user_id: string;
   }
