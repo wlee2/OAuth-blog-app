@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatMenuModule, MatButtonModule, MatToolbarModule, MatCardModule, MatSidenavModule, MatIconModule, MatListModule, MatSnackBarModule } from '@angular/material';
+import { CookieService } from 'ngx-cookie-service';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -20,6 +21,9 @@ import { environment } from '../environments/environment';
 import { BlogContentsComponent } from './blog-contents/blog-contents.component';
 import { BlogMainComponent } from './blog-main/blog-main.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { RegisterExternalComponent } from './register-external/register-external.component';
+import { FormsModule } from '@angular/forms';
+
 
 @NgModule({
   declarations: [
@@ -30,12 +34,14 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     BlogComponent,
     BlogContentsComponent,
     BlogMainComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    RegisterExternalComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    FormsModule,
     FontAwesomeModule,
     BrowserAnimationsModule,
     MatMenuModule,
@@ -55,7 +61,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
       logOnly: environment.production, // Restrict extension to log-only mode
     }),
   ],
-  providers: [],
+  providers: [CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

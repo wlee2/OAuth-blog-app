@@ -15,32 +15,24 @@ import { tap } from 'rxjs/operators';
 export class LoginComponent implements OnInit {
   facebookIcon = faFacebookSquare;
   userIcon = faUser;
-  userName$: Observable<string>;
-  picture$: Observable<string>;
-  userUrl$: Observable<string>;
+  Name$: Observable<string>;
+  Picture$: Observable<string>;
 
-  baseUrl = `https://${window.location.hostname}:44306/api/Account/ExternalLogin?provider=Facebook&response_type=token&client_id=myApp&redirect_uri=`;
+  baseUrl = `https://${window.location.hostname}:44368/api/Account/ExternalLogin?provider=Facebook&response_type=token&client_id=self&redirect_uri=`;
 
   tryExternalLogin() {
-    window.location.replace(`${this.baseUrl}${window.location.protocol}//${window.location.hostname}:4200`);
+    window.location.replace(`${this.baseUrl}${window.location.protocol}//${window.location.hostname}:4200/`);
   }
 
   logout() {
     this.authService.logout();
   }
 
-  redirectToUser() {
-    this.userUrl$.subscribe(url => {
-      window.location.href = url;
-    });
-  }
-
   constructor(
     private authService: AuthHelperService, private store: Store<{user: string}>
   ) {
-    this.userName$ = store.pipe(select('user')).pipe(select('userName'));
-    this.picture$ = store.pipe(select('user')).pipe(select('picture'));
-    this.userUrl$ = store.pipe(select('user')).pipe(select('url'));
+    this.Name$ = store.pipe(select('user')).pipe(select('Name'));
+    this.Picture$ = store.pipe(select('user')).pipe(select('Picture'));
   }
 
   ngOnInit() {

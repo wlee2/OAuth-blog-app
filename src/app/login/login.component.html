@@ -1,9 +1,9 @@
-<ng-container *ngIf="(userName$ | async)!; else elseTemplate">
+<ng-container *ngIf="(Name$ | async)!; else elseTemplate">
     <button mat-button class="user-status" [matMenuTriggerFor]="menu">
-        <img class="user-avatar" src="{{ picture$ | async }}" />
+        <img class="user-avatar" src="{{ Picture$ | async }}" />
     </button>
     <mat-menu #menu="matMenu">
-        <button mat-menu-item class="menu-item" (click)="redirectToUser()">{{ userName$ | async }}</button>
+        <button mat-menu-item class="menu-item">{{ Name$ | async }}</button>
         <button mat-menu-item class="menu-item" (click)="logout()">Logout</button>
     </mat-menu>
 </ng-container>

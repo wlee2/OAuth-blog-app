@@ -12,7 +12,7 @@ export class AuthGuard implements CanActivate {
   isLoggedIn: boolean = false;
 
   constructor(private authService: AuthHelperService, private router: Router, private _snackBar: MatSnackBar) { 
-    this.authService.userName$.subscribe(res => {
+    this.authService.Name$.subscribe(res => {
       if(res){
         this.isLoggedIn = true;
       }

@@ -1,63 +1,82 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Auth } from '../classes/Auth';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { RegisterExternalBindingModel } from '../classes/RegisterExternalBindingModel';
 import { Store, select } from '@ngrx/store';
-import { logout } from '../store/user.action';
+import { logout, login } from '../store/user.action';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
+import { CookieService } from 'ngx-cookie-service';
+import { PostHttpOptions, httpOptions } from '../common/header-options';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthHelperService {
-  userName$: Observable<string>;
+  Name$: Observable<string>;
 
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-
-      console.log("error");
-
-      return of(result as T);
-    };
-  }
+  private handleError(error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+      // 클라이언트나 네트워크 문제로 발생한 에러.
+      console.error('An error occurred:', error.error.message);
+    } else {
+      // 백엔드에서 실패한 것으로 보낸 에러.
+      // 요청으로 받은 에러 객체를 확인하면 원인을 확인할 수 있습니다.
+      console.error(
+        `Backend returned code ${error.status}, ` +
+        "body was: ", error.error);
+    }
+    // 사용자가 이해할 수 있는 에러 메시지를 반환합니다.
+    return throwError(
+      'Something bad happened; please try again later.');
+  };
 
   logout() {
-    localStorage.clear();
     this.store.dispatch(logout());
     this.router.navigate(['/']);
-
-    this._snackBar.open("You have been successfully logged out 😎","OK", {
+    this.cookieService.deleteAll();
+    this._snackBar.open("You have been successfully logged out 😎", "OK", {
       duration: 3000,
     });
   }
 
-  loginSucceed() {
+  loginSucceed(name: string) {
     window.history.replaceState({}, document.title, "/");
-    this.userName$.subscribe(res => {
-      this._snackBar.open(`Welcome ${res} 😊`,"OK", {
-        duration: 3000,
-      });
-    })
+    this._snackBar.open(`Welcome ${name} 😊`, "OK", {
+      duration: 3000,
+    });
   }
 
-  obtainToken(auth: Auth): Observable<any> {
-    const targetUrl = `https://${window.location.hostname}:44306/api/Account/ObtainLocalAccessToken`;
-    const paramsForObtain = new HttpParams().set("provider", auth.provider).set("externalAccessToken", auth.external_access_token);
-    return this.http.get(targetUrl, { params: paramsForObtain })
+  login(data) {
+    this.store.dispatch(login({ Name: data.Name, Picture: data.Picture, Gender: data.Gender }));
+    this.loginSucceed(data.Name);
+  }
+
+  getUserInfo(token: string): Observable<any> {
+    const url = 'https://localhost:44368/api/account/UserInfo';
+    return this.http.get(url, httpOptions(this.cookieService.get("access_token")))
       .pipe(
-        tap(res => { console.log(res) }),
-        catchError(this.handleError('error', null))
-      )
+        catchError(this.handleError)
+      );
+  }
+
+  RegistExternalUser(data: RegisterExternalBindingModel): Observable<any> {
+    console.log(data);
+    const url = 'https://localhost:44368/api/account/RegisterExternal';
+    return this.http.post(url, { Email: data.email }, PostHttpOptions(this.cookieService.get("access_token")))
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
   constructor(
     private http: HttpClient,
     private store: Store<{ user: string }>,
     private router: Router,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private cookieService: CookieService
   ) {
-    this.userName$ = store.pipe(select('user')).pipe(select('userName'));
+    this.Name$ = store.pipe(select('user')).pipe(select('Name'));
   }
 }

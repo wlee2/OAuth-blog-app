@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Auth } from '../classes/Auth';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthHelperService } from '../services/auth-helper.service';
 import { Store } from '@ngrx/store';
 import { login } from '../store/user.action';
+import { CookieService } from 'ngx-cookie-service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -19,27 +21,36 @@ export class HomeComponent implements OnInit {
     user_id: ""
   };
 
-  constructor(private route: ActivatedRoute, private authHelper: AuthHelperService, private store: Store<{ user: string }>) {
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private authHelper: AuthHelperService,
+    private cookieService: CookieService,
+    private store: Store<{ user: string }>
+  ) {
+    console.log(this.cookieService.getAll())
+    // this.route.fragment.subscribe(hash => {
+    //   if (hash != null) {
+    //     let access_token = new URLSearchParams(hash).get("access_token");
+    //     let expireString = new URLSearchParams(hash).get("expires_in");
+    //     const now = Date.now();
+    //     let expires_in = new Date(now + (1000 * parseInt(expireString)));
+    //     this.cookieService.delete('access_token');
+    //     cookieService.set('access_token', access_token, expires_in);
 
-    this.route.queryParams.subscribe(params => {
-      this.JWT.external_access_token = params["external_access_token"];
-      this.JWT.external_user_name = params["external_user_name"];
-      this.JWT.provider = params["provider"];
-      this.JWT.haslocalaccount = params["haslocalaccount"] === "True" ? true : false;
-      this.JWT.user_id = params["user_id"];
+    //     if (this.cookieService.get('Registered') == 'True') {
+    //       this.authHelper.getUserInfo(cookieService.get('access_token')).subscribe(res => {
+    //         this.authHelper.login(res);
+    //       }, err => {
+    //         console.error(err);
+    //       })
+    //     }
+    //     else {
+    //      // this.router.navigate(['RegisterExternal'])
+    //     }
+    //   }
+    // })
 
-      if (this.JWT.haslocalaccount === true) {
-        this.authHelper.obtainToken(this.JWT).subscribe(res => {
-          localStorage.setItem('token', res.access_token);
-          localStorage.setItem('userName', res.userName);
-          localStorage.setItem('user_picture', res.user_picture);
-          localStorage.setItem('user_url', res.user_url);
-          this.store.dispatch(login({ name: res.userName, picture: res.user_picture, url: res.user_url }));
-          this.authHelper.loginSucceed();
-        });
-      }
-
-    })
   }
 
   ngOnInit() {

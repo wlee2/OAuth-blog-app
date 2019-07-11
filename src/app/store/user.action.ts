@@ -2,7 +2,7 @@ import { createAction, props } from '@ngrx/store';
 
 export const login = createAction(
   'Login',
-  props<{ name: string; picture: string; url: string; }>()
+  props<{ Name: string; Picture: string; Gender: string; }>()
 );
 
 export const test = createAction(
