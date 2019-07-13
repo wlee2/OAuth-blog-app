@@ -4,7 +4,8 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatMenuModule, MatButtonModule, MatToolbarModule, MatCardModule, MatSidenavModule, MatIconModule, MatListModule, MatSnackBarModule } from '@angular/material';
+import { MatMenuModule, MatButtonModule, MatToolbarModule, MatCardModule, MatSidenavModule, MatIconModule, MatListModule, MatSnackBarModule, MatProgressSpinnerModule } from '@angular/material';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CookieService } from 'ngx-cookie-service';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -18,10 +19,7 @@ import { StoreModule } from '@ngrx/store';
 import * as userStore from './store/user.reducer';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
-import { BlogContentsComponent } from './blog-contents/blog-contents.component';
-import { BlogMainComponent } from './blog-main/blog-main.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { RegisterExternalComponent } from './register-external/register-external.component';
 import { FormsModule } from '@angular/forms';
 
 
@@ -32,10 +30,7 @@ import { FormsModule } from '@angular/forms';
     HomeComponent,
     NavBarComponent,
     BlogComponent,
-    BlogContentsComponent,
-    BlogMainComponent,
-    PageNotFoundComponent,
-    RegisterExternalComponent
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
@@ -53,6 +48,7 @@ import { FormsModule } from '@angular/forms';
     MatIconModule,
     MatListModule,
     MatSnackBarModule,
+    MatProgressSpinnerModule,
     StoreModule.forRoot({
       user: userStore.reducer
     }),
@@ -60,6 +56,7 @@ import { FormsModule } from '@angular/forms';
       maxAge: 25, // Retains last 25 states
       logOnly: environment.production, // Restrict extension to log-only mode
     }),
+    DragDropModule
   ],
   providers: [CookieService],
   bootstrap: [AppComponent]

@@ -1,11 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Auth } from '../classes/Auth';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AuthHelperService } from '../services/auth-helper.service';
-import { Store } from '@ngrx/store';
-import { login } from '../store/user.action';
-import { CookieService } from 'ngx-cookie-service';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -13,47 +6,26 @@ import { Observable } from 'rxjs';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  JWT: Auth = {
-    external_access_token: "",
-    external_user_name: "",
-    provider: "",
-    haslocalaccount: false,
-    user_id: ""
-  };
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private authHelper: AuthHelperService,
-    private cookieService: CookieService,
-    private store: Store<{ user: string }>
-  ) {
-    console.log(this.cookieService.getAll())
-    // this.route.fragment.subscribe(hash => {
-    //   if (hash != null) {
-    //     let access_token = new URLSearchParams(hash).get("access_token");
-    //     let expireString = new URLSearchParams(hash).get("expires_in");
-    //     const now = Date.now();
-    //     let expires_in = new Date(now + (1000 * parseInt(expireString)));
-    //     this.cookieService.delete('access_token');
-    //     cookieService.set('access_token', access_token, expires_in);
+  blogs = [
+    {
+      id: 1,
+      author: "wooseok",
+      title: "first place",
+      contents: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
 
-    //     if (this.cookieService.get('Registered') == 'True') {
-    //       this.authHelper.getUserInfo(cookieService.get('access_token')).subscribe(res => {
-    //         this.authHelper.login(res);
-    //       }, err => {
-    //         console.error(err);
-    //       })
-    //     }
-    //     else {
-    //      // this.router.navigate(['RegisterExternal'])
-    //     }
-    //   }
-    // })
+    },
+    {
+      id: 2,
+      author: "jisu",
+      title: "second place",
+      contents: "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.",
 
-  }
+    }
+  ];
 
   ngOnInit() {
 
   }
+  
 }

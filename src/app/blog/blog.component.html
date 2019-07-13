@@ -1,20 +1,37 @@
-<mat-sidenav-container class="container">
-    <mat-sidenav class="side-nav" #sidenav [mode]="(isHandset$ | async) ? 'over' : 'side'">
-        <mat-toolbar (click)="sidenav.toggle()" [routerLink]="[{outlets: {blogOutlet: ['']}}]">List</mat-toolbar>
-        <mat-nav-list>
-            <a mat-list-item [routerLink]="[{outlets: {blogOutlet: ['view', 1]}}]">view 1</a>
-            <a mat-list-item [routerLink]="[{outlets: {blogOutlet: ['view', 2]}}]">Link 2</a>
-            <a mat-list-item [routerLink]="[{outlets: {blogOutlet: ['view', 3]}}]">Link 3</a>
-        </mat-nav-list>
-    </mat-sidenav>
-
-    <mat-sidenav-content>
-        <mat-toolbar><button mat-button (click)="sidenav.toggle()">
-                <fa-icon class="icon" [icon]="faBars"></fa-icon>
-            </button></mat-toolbar>
-        <div class="contents">
-            <router-outlet name="blogOutlet"></router-outlet>
+<mat-card class="matcard-container">
+    <mat-card-header>
+        <div mat-card-avatar>
+            <img class="matcard-avatar" src="https://material.angular.io/assets/img/examples/shiba2.jpg">
         </div>
 
-    </mat-sidenav-content>
-</mat-sidenav-container>
+        <mat-card-title>{{blog.title | uppercase}}</mat-card-title>
+        <mat-card-subtitle>{{blog.author}}</mat-card-subtitle>
+    </mat-card-header>
+
+    <div mat-card-image class="matcard-image-container">
+        <div class="scrolling-wrapper" [style.height]="heightTo">
+            <div *ngIf="!imageReady" style="height: 100%; padding: 100px 0 100px 0;">
+                <mat-spinner style="margin: auto;"></mat-spinner>
+            </div>
+            <img #imageTag class="image" [hidden]="!imageReady" *ngFor="let image of images"
+                [src]="image" (load)="imageLoaded()" [style.transform]="moveTo" />
+        </div>
+        <button *ngIf="moveCount != 0" class="move-button left" mat-button (click)="imageToLeft()">
+            <fa-icon [icon]="faChevronCircleLeft" size="2x"></fa-icon>
+        </button>
+        <button *ngIf="moveCount < images.length - 1" class="move-button right" mat-button (click)="imageToRight()">
+            <fa-icon [icon]="faChevronCircleRight" size="2x"></fa-icon>
+        </button>
+    </div>
+
+
+    <mat-card-content>
+        <p>
+            {{blog.contents}}
+        </p>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-button>LIKE</button>
+        <button mat-button>SHARE</button>
+    </mat-card-actions>
+</mat-card>

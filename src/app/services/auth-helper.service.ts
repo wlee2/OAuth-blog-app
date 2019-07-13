@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { RegisterExternalBindingModel } from '../classes/RegisterExternalBindingModel';
 import { Store, select } from '@ngrx/store';
 import { logout, login } from '../store/user.action';
 import { Router } from '@angular/router';
@@ -25,7 +24,7 @@ export class AuthHelperService {
       // 요청으로 받은 에러 객체를 확인하면 원인을 확인할 수 있습니다.
       console.error(
         `Backend returned code ${error.status}, ` +
-        "body was: ", error.error);
+        "body was: ", error.message);
     }
     // 사용자가 이해할 수 있는 에러 메시지를 반환합니다.
     return throwError(
@@ -36,16 +35,16 @@ export class AuthHelperService {
     this.store.dispatch(logout());
     this.router.navigate(['/']);
     this.cookieService.deleteAll();
-    this._snackBar.open("You have been successfully logged out 😎", "OK", {
-      duration: 3000,
-    });
+    this._snackBar.open(
+      "You have been successfully logged out 😎", "OK", { duration: 3000 }
+    );
   }
 
   loginSucceed(name: string) {
     window.history.replaceState({}, document.title, "/");
-    this._snackBar.open(`Welcome ${name} 😊`, "OK", {
-      duration: 3000,
-    });
+    this._snackBar.open(
+      `Welcome ${name} 😊`, "OK", { duration: 3000 }
+    );
   }
 
   login(data) {
@@ -53,18 +52,9 @@ export class AuthHelperService {
     this.loginSucceed(data.Name);
   }
 
-  getUserInfo(token: string): Observable<any> {
+  getUserInfo(): Observable<any> {
     const url = 'https://localhost:44368/api/account/UserInfo';
     return this.http.get(url, httpOptions(this.cookieService.get("access_token")))
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
-
-  RegistExternalUser(data: RegisterExternalBindingModel): Observable<any> {
-    console.log(data);
-    const url = 'https://localhost:44368/api/account/RegisterExternal';
-    return this.http.post(url, { Email: data.email }, PostHttpOptions(this.cookieService.get("access_token")))
       .pipe(
         catchError(this.handleError)
       );
