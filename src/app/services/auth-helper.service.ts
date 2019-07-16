@@ -48,12 +48,12 @@ export class AuthHelperService {
   }
 
   login(data) {
-    this.store.dispatch(login({ Name: data.Name, Picture: data.Picture, Gender: data.Gender }));
+    this.store.dispatch(login({ ID: data.ID, Name: data.Name, Picture: data.Picture, Gender: data.Gender }));
     this.loginSucceed(data.Name);
   }
 
   getUserInfo(): Observable<any> {
-    const url = 'https://localhost:44368/api/account/UserInfo';
+    const url = `https://${window.location.hostname}:44368/api/account/UserInfo`;
     return this.http.get(url, httpOptions(this.cookieService.get("access_token")))
       .pipe(
         catchError(this.handleError)

@@ -1,0 +1,102 @@
+<mat-accordion class="example-headers-align">
+  <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Select
+      </mat-panel-title>
+      <mat-panel-description>
+        {{!selectedData ? "select a place to review" : selectedData.formatted_address.length > 30 ? selectedData.formatted_address.substring(0, 30) + '...' : selectedData.formatted_address }}
+        <mat-icon>place</mat-icon>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <mat-form-field style="width: 100%;">
+      <input matInput type="search" placeholder="Place" [(ngModel)]="search" (ngModelChange)="autocomplete($event)">
+    </mat-form-field>
+
+    <agm-map #map *ngIf="selectedData; else elseTemplate" style="height: 200px; width: 100%;" [zoom]="15"
+      [latitude]="selectedData.geometry.location.lat" [longitude]="selectedData.geometry.location.lng"
+      [gestureHandling]="'none'" [zoomControlOptions]="zoomOption" [streetViewControl]="false"
+      (mapReady)="mapLoadSuccess(infoWindow, $event)">
+      <agm-marker [latitude]="selectedData.geometry.location.lat" [longitude]="selectedData.geometry.location.lng"
+        [label]="'A'" (markerClick)="markerClick(infoWindow, $event)">
+        <agm-info-window #infoWindow [disableAutoPan]="false">
+          {{selectedData.name}}
+        </agm-info-window>
+      </agm-marker>
+    </agm-map>
+    <ng-template #elseTemplate>
+      <div style="height: 100px; margin: 0;">
+        <p style="text-align: center; margin-top: 100px; color: #bdbdbd">Select one of the place results</p>
+      </div>
+    </ng-template>
+
+    <mat-action-list>
+      <button mat-list-item *ngFor="let data of googleData" (click)="placeSelect(data)">
+        <h4 mat-line>{{data.structured_formatting.main_text}}</h4>
+        <p mat-line>{{data.structured_formatting.secondary_text}}</p>
+        <mat-divider></mat-divider>
+      </button>
+    </mat-action-list>
+
+    <div style="display: flex; justify-content: center;">
+      <button mat-button [disabled]="!selectedData" (click)="nextStep()">
+        <mat-icon>keyboard_arrow_down</mat-icon>
+      </button>
+    </div>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle [disabled]="!selectedData">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Review
+      </mat-panel-title>
+      <mat-panel-description>
+        {{!review ? 'speak your opinions' : review.length > 25 ? review.substring(0, 25) + '...' : review}}
+        <mat-icon>spellcheck</mat-icon>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <mat-form-field style="width: 100%;">
+      <textarea matInput placeholder="How was this place" [(ngModel)]="review"></textarea>
+    </mat-form-field>
+
+    <div style="display: flex; justify-content: center;">
+      <button mat-button [disabled]="!review" (click)="nextStep()">
+        <mat-icon>keyboard_arrow_down</mat-icon>
+      </button>
+    </div>
+
+  </mat-expansion-panel>
+
+
+  <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle [disabled]="!selectedData || !review">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Rating
+      </mat-panel-title>
+      <mat-panel-description>
+        {{rating == 0 ? 'set your rating' : rating}}
+        <mat-icon>star_rate</mat-icon>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <h3 style="text-align: center">
+      Rating this place
+    </h3>
+    <mat-divider></mat-divider>
+    <div style="text-align: center;">
+      <star-rating style="padding: 10px;" value="5" checkedcolor="gold" uncheckedcolor="#bdbdbd" size="38px"
+        readonly="false" (rate)="onRate($event)"></star-rating>
+    </div>
+    <mat-divider></mat-divider>
+    <h4 style="text-align: center">
+      {{rating}} / 5
+    </h4>
+
+  </mat-expansion-panel>
+
+</mat-accordion>
+<div style="display: flex; justify-content: center; padding-top: 20px;">
+  <button mat-raised-button [disabled]="!selectedData || !review || !rating" (click)="submit()">Submit</button>
+</div>

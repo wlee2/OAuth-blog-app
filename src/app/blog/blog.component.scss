@@ -4,7 +4,7 @@
   margin-bottom: 40px;
   border: 1px solid #eeeeee;
 
-  @media screen and (max-width: 700px) {
+  @media screen and (max-width: $media-max-break) {
     border: none;
     box-shadow: none;
   }
@@ -18,7 +18,11 @@
   .matcard-image-container {
     position: relative;
     .move-button {
-      position: absolute; top: 45%; color: #f8f8f8; opacity: 0.8;
+      position: absolute;
+      height: 100%;
+      top: 0; 
+      color: #acacacbb; 
+      opacity: 0.8;
     }
   }
 }
@@ -28,15 +32,24 @@
   overflow-x: hidden;
   overflow-y: hidden;
   white-space: nowrap;
-  transition: 0.5s ease-in 200ms;
+  transition: 400ms ease-in;
 
-  .image {
+  .viewer {
     display: inline-block;
+    vertical-align: top;
     width: 100%;
-    max-height: 800px;
-    min-height: 400px;
-    object-fit: cover;
+    max-height: $max-height;
     transition: 400ms ease-in ;
+    img {
+      width: 100%;
+    }
+  }
+}
+
+.google-map {
+  height: 400px;
+  @media screen and (max-width: $media-max-break) {
+    height: 300px;
   }
 }
 

@@ -1,6 +1,10 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, Input, ViewChildren, QueryList } from '@angular/core';
 import { faChevronCircleLeft, faChevronCircleRight } from '@fortawesome/free-solid-svg-icons';
-import { element } from 'protractor';
+import { ControlPosition } from '@agm/core/services/google-maps-types';
+import { Observable, observable } from 'rxjs';
+import { CurrentLocationService } from '../services/current-location.service';
+import { ReviewData } from '../classes/ReviewData';
+import { GooglePlaceService } from '../services/google-place.service';
 
 @Component({
   selector: 'app-blog',
@@ -10,22 +14,25 @@ import { element } from 'protractor';
 export class BlogComponent implements OnInit {
   faChevronCircleLeft = faChevronCircleLeft;
   faChevronCircleRight = faChevronCircleRight;
-  @ViewChild('imageTag', { static: false }) imageTag: ElementRef;
   @ViewChildren('imageTag') imageTags !: QueryList<any>;
-  imageReady = false;
 
   moveCount: number = 0;
   moveTo;
   heightTo;
   dynamicHeight;
   dynamicWidth;
-  heightestHeight;
 
-  // isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
-  //   .pipe(
-  //     map(result => result.matches)
-  //   );
-  @Input() blog;
+  lat: number = 43.7854208;
+  lng: number = -79.41406719999999;
+  zoomOption = {
+    position: ControlPosition.LEFT_CENTER
+  }
+
+
+  @Input() review: ReviewData;
+  locationDetail: {};
+  writtenDate;
+
   //images = [1, 2, 3].map(() => `https://picsum.photos/900/500?random&t=${Math.random()}`);
   images = [
     `https://picsum.photos/900/500?random&t=${Math.random()}`,
@@ -38,20 +45,13 @@ export class BlogComponent implements OnInit {
 
   ]
 
-  constructor() { }
-
   imageToRight() {
     if (this.moveCount < this.images.length - 1) {
       this.moveCount++;
       this.dynamicWidth = (this.imageTags.toArray()[this.moveCount].nativeElement as HTMLElement).offsetWidth;
       this.dynamicHeight = (this.imageTags.toArray()[this.moveCount].nativeElement as HTMLElement).offsetHeight;
 
-      if (this.heightestHeight > this.dynamicHeight) {
-        this.moveTo = `translate(${-this.dynamicWidth * this.moveCount}px, ${this.dynamicHeight -this.heightestHeight}px)`;
-      }
-      else {
-        this.moveTo = `translate(${-this.dynamicWidth * this.moveCount}px, 0px)`;
-      }
+      this.moveTo = `translateX(${-this.dynamicWidth * this.moveCount}px)`;
       this.heightTo = `${this.dynamicHeight}px`;
     }
   }
@@ -61,32 +61,39 @@ export class BlogComponent implements OnInit {
       this.moveCount--;
       this.dynamicWidth = (this.imageTags.toArray()[this.moveCount].nativeElement as HTMLElement).offsetWidth;
       this.dynamicHeight = (this.imageTags.toArray()[this.moveCount].nativeElement as HTMLElement).offsetHeight;
-      
-      if (this.heightestHeight > this.dynamicHeight) {
-        this.moveTo = `translate(${-this.dynamicWidth * this.moveCount}px, ${this.dynamicHeight - this.heightestHeight}px)`;
-      }
-      else {
-        this.moveTo = `translate(${-this.dynamicWidth * this.moveCount}px, 0px)`;
-      }
+
+      this.moveTo = `translateX(${-this.dynamicWidth * this.moveCount}px)`;
       this.heightTo = `${this.dynamicHeight}px`;
     }
   }
 
-  imageLoaded() {
-    if(!this.imageReady) {
-      this.heightestHeight = this.imageTags.toArray().map(ele => {
-        return (ele.nativeElement as HTMLElement).offsetHeight;
-      });
-      this.heightestHeight = Math.max.apply(null, this.heightestHeight);
-      this.dynamicHeight = (this.imageTags.toArray()[this.moveCount].nativeElement as HTMLElement).offsetHeight;
-      this.moveTo = `translate(0px, ${this.dynamicHeight - this.heightestHeight}px)`;  
-      this.heightTo = `${this.dynamicHeight}px`;
-    }
-    this.imageReady = true;
-    
+  clickEvent(infoWindow, event) {
+    infoWindow.open();
+  }
+
+  mapReady(infoWindow, event) {
+    this.dynamicHeight = (this.imageTags.toArray()[this.moveCount].nativeElement as HTMLElement).offsetHeight;
+    this.heightTo = `${this.dynamicHeight}px`;
+    infoWindow.open();
   }
 
   ngOnInit() {
+    this.googlePlaceService.getPlaceDetail(this.review.LocationID).subscribe(
+      res => {
+        this.locationDetail = JSON.parse(res).result;
+        this.writtenDate = new Date(this.review.Date).toLocaleDateString();
+        console.log(this.locationDetail);
+      },
+      err => {
+        console.error(err);
+      }
+    )
+  }
+
+
+  constructor(
+    private googlePlaceService: GooglePlaceService
+  ) {
   }
 
 }

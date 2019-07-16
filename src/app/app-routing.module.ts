@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
-import { BlogComponent } from './blog/blog.component';
 import { AuthGuard } from './services/auth.guard';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { WriteReviewComponent } from './write-review/write-review.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   {
-    path: 'blog', component: BlogComponent,
+    path: 'write', component: WriteReviewComponent,
     canActivate: [AuthGuard],
     children: [
     ] 

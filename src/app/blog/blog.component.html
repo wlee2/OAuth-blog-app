@@ -4,17 +4,34 @@
             <img class="matcard-avatar" src="https://material.angular.io/assets/img/examples/shiba2.jpg">
         </div>
 
-        <mat-card-title>{{blog.title | uppercase}}</mat-card-title>
-        <mat-card-subtitle>{{blog.author}}</mat-card-subtitle>
+        <mat-card-title *ngIf="locationDetail">{{locationDetail.name | uppercase}}</mat-card-title>
+        <mat-card-subtitle >{{ review.LocationName}}</mat-card-subtitle>
     </mat-card-header>
 
     <div mat-card-image class="matcard-image-container">
         <div class="scrolling-wrapper" [style.height]="heightTo">
-            <div *ngIf="!imageReady" style="height: 100%; padding: 100px 0 100px 0;">
+            <div *ngIf="!locationDetail" class="viewer">
                 <mat-spinner style="margin: auto;"></mat-spinner>
             </div>
-            <img #imageTag class="image" [hidden]="!imageReady" *ngFor="let image of images"
-                [src]="image" (load)="imageLoaded()" [style.transform]="moveTo" />
+            <div #imageTag class="viewer" [hidden]="!locationDetail" [style.transform]="moveTo">
+                <agm-map *ngIf="locationDetail" #map class="google-map" [zoom]="13"
+                    [latitude]="locationDetail.geometry.location.lat" [longitude]="locationDetail.geometry.location.lng"
+                    [gestureHandling]="'none'" [zoomControlOptions]="zoomOption" [streetViewControl]="false"
+                    (mapReady)="mapReady(infoWindow, $event)">
+                    <agm-marker [latitude]="locationDetail.geometry.location.lat"
+                        [longitude]="locationDetail.geometry.location.lng" [label]="'A'"
+                        (markerClick)="clickEvent(infoWindow, $event)">
+                        <agm-info-window #infoWindow [disableAutoPan]="false">
+                            <p>{{locationDetail.name}}</p>
+                        </agm-info-window>
+                    </agm-marker>
+                </agm-map>
+
+            </div>
+            <div #imageTag class="viewer" [hidden]="!imageReady" [style.transform]="moveTo"
+                *ngFor="let image of images">
+                <img [src]="image" />
+            </div>
         </div>
         <button *ngIf="moveCount != 0" class="move-button left" mat-button (click)="imageToLeft()">
             <fa-icon [icon]="faChevronCircleLeft" size="2x"></fa-icon>
@@ -26,9 +43,23 @@
 
 
     <mat-card-content>
+        <div style="font-size: 12px; color: #bdbdbd;">
+            <div style="display: flex; justify-content: flex-end;">
+                <p style="margin: 11px; padding: 0;">Author Rating: </p>
+                <star-rating style="margin: 0; padding: 0;" value="{{review.Rate}}" checkedcolor="gold"
+                    uncheckedcolor="#bdbdbd" size="23px" readonly="true"></star-rating>
+                <p style="margin: 11px; padding: 0;">{{review.Rate}} / 5</p>
+            </div>
+            <div style="display: flex; justify-content: flex-end;">
+                <p style="margin: 0px; padding: 0;">Written: {{ writtenDate}}</p>
+            </div>
+        </div>
+
         <p>
-            {{blog.contents}}
+            {{review.Review}}
         </p>
+
+
     </mat-card-content>
     <mat-card-actions>
         <button mat-button>LIKE</button>

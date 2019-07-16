@@ -4,9 +4,10 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatMenuModule, MatButtonModule, MatToolbarModule, MatCardModule, MatSidenavModule, MatIconModule, MatListModule, MatSnackBarModule, MatProgressSpinnerModule } from '@angular/material';
+import { MatMenuModule, MatExpansionModule, MatButtonModule, MatToolbarModule, MatCardModule, MatSidenavModule, MatIconModule, MatListModule, MatSnackBarModule, MatProgressSpinnerModule, MatInputModule, MatStepperModule } from '@angular/material';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CookieService } from 'ngx-cookie-service';
+import { AgmCoreModule } from '@agm/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -21,7 +22,8 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { FormsModule } from '@angular/forms';
-
+import { WriteReviewComponent } from './write-review/write-review.component';
+import { RatingModule } from 'ng-starrating';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,8 @@ import { FormsModule } from '@angular/forms';
     HomeComponent,
     NavBarComponent,
     BlogComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    WriteReviewComponent
   ],
   imports: [
     BrowserModule,
@@ -48,7 +51,10 @@ import { FormsModule } from '@angular/forms';
     MatIconModule,
     MatListModule,
     MatSnackBarModule,
+    MatInputModule,
+    MatStepperModule,
     MatProgressSpinnerModule,
+    MatExpansionModule,
     StoreModule.forRoot({
       user: userStore.reducer
     }),
@@ -56,7 +62,11 @@ import { FormsModule } from '@angular/forms';
       maxAge: 25, // Retains last 25 states
       logOnly: environment.production, // Restrict extension to log-only mode
     }),
-    DragDropModule
+    DragDropModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyDy1QbzjkWqN8iS4N3Hb2_seHjPYqNnIaQ'
+    }),
+    RatingModule
   ],
   providers: [CookieService],
   bootstrap: [AppComponent]

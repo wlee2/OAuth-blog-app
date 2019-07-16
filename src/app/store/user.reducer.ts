@@ -2,12 +2,14 @@ import { createReducer, on, Action, props } from '@ngrx/store';
 import { login, logout, test } from './user.action';
 
 export interface State {
+  ID: string;
   Name: string;
   Picture: string;
   Gender: string;
 }
 
 export const initialState = {
+  ID: null,
   Name: null,
   Picture: null,
   Gender: null
@@ -15,7 +17,8 @@ export const initialState = {
 
 export const userReducer = createReducer(
   initialState,
-  on(login, (state, {Name, Picture, Gender}) => ({
+  on(login, (state, {ID, Name, Picture, Gender}) => ({
+    ID: ID,
     Name: Name,
     Picture: Picture,
     Gender: Gender
