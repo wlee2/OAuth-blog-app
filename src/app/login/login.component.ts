@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
   baseUrl = `https://${window.location.hostname}:44368/api/Account/ExternalLogin?provider=Facebook&response_type=token&client_id=self&redirect_uri=`;
 
   tryExternalLogin() {
-    window.location.replace(`${this.baseUrl}${window.location.protocol}//${window.location.hostname}:4200/`);
+    window.location.replace(`${this.baseUrl}${window.location.protocol}//${window.location.hostname}:${window.location.port}/`);
   }
 
   logout() {

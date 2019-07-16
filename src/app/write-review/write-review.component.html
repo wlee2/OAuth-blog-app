@@ -14,6 +14,14 @@
       <input matInput type="search" placeholder="Place" [(ngModel)]="search" (ngModelChange)="autocomplete($event)">
     </mat-form-field>
 
+    <mat-action-list>
+      <button mat-list-item *ngFor="let data of googleData" (click)="placeSelect(data)">
+        <h4 mat-line>{{data.structured_formatting.main_text}}</h4>
+        <p mat-line>{{data.structured_formatting.secondary_text}}</p>
+        <mat-divider></mat-divider>
+      </button>
+    </mat-action-list>
+
     <agm-map #map *ngIf="selectedData; else elseTemplate" style="height: 200px; width: 100%;" [zoom]="15"
       [latitude]="selectedData.geometry.location.lat" [longitude]="selectedData.geometry.location.lng"
       [gestureHandling]="'none'" [zoomControlOptions]="zoomOption" [streetViewControl]="false"
@@ -30,14 +38,6 @@
         <p style="text-align: center; margin-top: 100px; color: #bdbdbd">Select one of the place results</p>
       </div>
     </ng-template>
-
-    <mat-action-list>
-      <button mat-list-item *ngFor="let data of googleData" (click)="placeSelect(data)">
-        <h4 mat-line>{{data.structured_formatting.main_text}}</h4>
-        <p mat-line>{{data.structured_formatting.secondary_text}}</p>
-        <mat-divider></mat-divider>
-      </button>
-    </mat-action-list>
 
     <div style="display: flex; justify-content: center;">
       <button mat-button [disabled]="!selectedData" (click)="nextStep()">

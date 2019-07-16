@@ -47,13 +47,11 @@ export class WriteReviewComponent implements OnInit {
 
   autocomplete(event) {
     if (this.search) {
-      window.alert(this.search);
       this.googlePlaceService.getPlaceAutocomplete(this.search).subscribe(res => {
         this.googleData = JSON.parse(res).predictions;
       })
     }
     else {
-      window.alert("search else")
       this.selectedData = null;
       this.googleData = null;
     }
