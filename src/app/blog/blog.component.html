@@ -39,8 +39,8 @@
             <fa-icon [icon]="faChevronCircleRight" size="2x"></fa-icon>
         </button>
         <div style="display: flex; justify-content: center; margin: 0; padding: 0;">
-            <mat-icon *ngFor="let i of count" [style.color]="moveCount == i ? '#29487d' : '#bdbdbd'"
-                style="margin: 0; padding: 0; font-size: 15px;" (click)="moveCountChange(i)">minimize</mat-icon>
+            <mat-icon *ngFor="let c of count;let i = index" [style.color]="moveCount == i ? '#29487d' : '#bdbdbd'"
+                style="margin: 0; padding: 0; font-size: 15px;" (click)="moveCountChange(i)">{{i == count.length - 1 ? 'place' : 'minimize'}}</mat-icon>
         </div>
     </div>
 
