@@ -7,4 +7,14 @@ body {
   font-family: Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif !important;
   margin: 0;
   height: 100%;
+  -webkit-text-size-adjust: none;
+  touch-action: manipulation;
+
+  @media screen and (-webkit-min-device-pixel-ratio: 0) {
+    select:focus,
+    textarea:focus,
+    input:focus {
+      font-size: 16px;
+    }
+  }
 }

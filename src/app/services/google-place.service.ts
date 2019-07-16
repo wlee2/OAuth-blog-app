@@ -40,8 +40,7 @@ export class GooglePlaceService {
         console.error(err);
         window.alert(`${err.code} and ${err.message}`);
       }
-    )
-
+    );
   }
 
   getPlaceAutocomplete(input: string): Observable<any> {
@@ -59,5 +58,9 @@ export class GooglePlaceService {
       .pipe(
         catchError(this.handleError)
       );
+  }
+
+  getPlacePhotoURL(photoRef: string): string {
+    return `https://localhost:44368/api/place/photo?photoRef=${photoRef}`
   }
 }
