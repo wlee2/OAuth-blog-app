@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import * as secret from 'secret';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -64,7 +65,7 @@ import { RatingModule } from 'ng-starrating';
     }),
     DragDropModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyDy1QbzjkWqN8iS4N3Hb2_seHjPYqNnIaQ'
+      apiKey: secret.mapKey
     }),
     RatingModule
   ],
