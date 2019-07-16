@@ -18,9 +18,11 @@ export class BlogComponent implements OnInit {
   faChevronCircleRight = faChevronCircleRight;
   @ViewChildren('imageTag') imageTags !: QueryList<any>;
 
+  imageReady = false;
+  imageReadyCounter = 0;
   moveCount: number = 0;
   moveTo;
-  heightTo;
+  heightTo = "350px";
   dynamicHeight;
   dynamicWidth;
 
@@ -88,8 +90,15 @@ export class BlogComponent implements OnInit {
   }
 
   onImageReady() {
-    this.dynamicHeight = (this.imageTags.toArray()[this.moveCount].nativeElement as HTMLElement).offsetHeight;
-    this.heightTo = `${this.dynamicHeight}px`;
+    // half load to view on!
+    if(this.imageReadyCounter < this.images.length / 2) {
+      this.imageReadyCounter++;
+    }
+    else {
+      this.dynamicHeight = (this.imageTags.toArray()[this.moveCount].nativeElement as HTMLElement).offsetHeight;
+      this.heightTo = `${this.dynamicHeight}px`;
+      this.imageReady = true;
+    }
   }
 
   ngOnInit() {
