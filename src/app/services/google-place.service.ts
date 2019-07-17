@@ -61,6 +61,6 @@ export class GooglePlaceService {
   }
 
   getPlacePhotoURL(photoRef: string): string {
-    return `https://localhost:44368/api/place/photo?photoRef=${photoRef}`
+    return `https://${window.location.hostname}:44368/api/place/photo?photoRef=${photoRef}`
   }
 }

@@ -5,7 +5,7 @@
         Select
       </mat-panel-title>
       <mat-panel-description>
-        {{!selectedData ? "select a place to review" : selectedData.formatted_address.length > 30 ? selectedData.formatted_address.substring(0, 30) + '...' : selectedData.formatted_address }}
+        {{!selectedData ? "select a place to review" : selectedData['formatted_address'].length > 30 ? selectedData['formatted_address'].substring(0, 30) + '...' : selectedData['formatted_address'] }}
         <mat-icon>place</mat-icon>
       </mat-panel-description>
     </mat-expansion-panel-header>

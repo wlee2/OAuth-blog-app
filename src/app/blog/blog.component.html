@@ -15,7 +15,7 @@
             </div>
             <div #imageTag class="viewer" [hidden]="!imageReady" [style.transform]="moveTo"
                 *ngFor="let image of images">
-                <img #img [src]="image" (load)="onImageReady()" />
+                <img [src]="image" (load)="onImageReady()" />
             </div>
             <div #imageTag class="viewer" [style.transform]="moveTo">
                 <agm-map #map class="google-map" [zoom]="13" [latitude]="locationDetail.geometry.location.lat"
