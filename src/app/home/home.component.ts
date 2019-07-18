@@ -19,14 +19,17 @@ export class HomeComponent implements OnInit {
   constructor(
     private reviewService: ReviewService
   ) {
-    this.reviewService.getReviewData(this.pagination).subscribe(
-      data => {
-        this.reviewData = JSON.parse(data);
-      }
-    )
   }
 
   ngOnInit() {
+    this.reviewService.getReviewData(this.pagination).subscribe(
+      data => {
+        this.reviewData = JSON.parse(data);
+      },
+      err => {
+        window.alert(err);
+      }
+    )
   }
 
   @HostListener('window:scroll', ['$event']) // for window scroll events
