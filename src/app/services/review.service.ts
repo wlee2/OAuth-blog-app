@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { ReviewData } from '../classes/ReviewData';
+import { ReviewData, ReviewModel } from '../classes/ReviewData';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material';
@@ -40,9 +40,9 @@ export class ReviewService {
     this.router.navigate(['/']);
   }
 
-  getReviewData(): Observable<ReviewData[]> {
+  getReviewData(): Observable<any> {
     const url = `https://${window.location.hostname}:44368/api/reviews`;
-    return this.http.get<ReviewData[]>(url)
+    return this.http.get(url)
       .pipe(
         catchError(this.handleError)
       );

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ReviewService } from '../services/review.service';
-import { ReviewData } from '../classes/ReviewData';
+import { ReviewModel } from '../classes/ReviewData';
+import { faMapMarkedAlt } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-home',
@@ -8,16 +9,16 @@ import { ReviewData } from '../classes/ReviewData';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+  faMapMarkedAlt = faMapMarkedAlt;
 
-  reviewData: ReviewData[];
+  reviewData: ReviewModel[];
 
   constructor(
     private reviewService: ReviewService
   ) {
     this.reviewService.getReviewData().subscribe(
       data => {
-        this.reviewData = data;
-        console.log(this.reviewData);
+        this.reviewData = JSON.parse(data);
       }
     )
   }

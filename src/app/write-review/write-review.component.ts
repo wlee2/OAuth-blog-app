@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, QueryList } from '@angular/core';
 import { GooglePlaceService } from '../services/google-place.service';
 import { AgmMap, AgmInfoWindow } from '@agm/core';
 import { ControlPosition } from '@agm/core/services/google-maps-types';
-import { ReviewData } from '../classes/ReviewData';
+import { ReviewData, Location, Photo } from '../classes/ReviewData';
 import { Observable } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { ReviewService } from '../services/review.service';
@@ -33,14 +33,14 @@ export class WriteReviewComponent implements OnInit {
 
   constructor(
     private googlePlaceService: GooglePlaceService,
-    private store: Store<{user: string}>,
+    private store: Store<{ user: string }>,
     private reviewService: ReviewService,
   ) {
     this.ID$ = store.pipe(select('user')).pipe(select('ID'));
     this.ID$.subscribe(id => {
       this.userID = id;
     })
-   }
+  }
 
   ngOnInit() {
   }
@@ -77,14 +77,27 @@ export class WriteReviewComponent implements OnInit {
   }
 
   submit() {
-    const date = new Date(); 
+    const location : Location = {
+      Reference: this.selectedData["reference"],
+      Name: this.selectedData["name"],
+      Address: this.selectedData["formatted_address"],
+      Lat: this.selectedData["geometry"]["location"]["lat"],
+      Lng: this.selectedData["geometry"]["location"]["lng"]
+    }
+
+    const photos : Photo[] = [];
+
+    this.selectedData["photos"].forEach(photo => {
+      photos.push(new Photo(photo["photo_reference"]));
+    });
+
     this.reviewData = {
-      LocationID: this.selectedData["place_id"],
-      LocationName: this.selectedData["formatted_address"],
-      Review: this.review,
-      Rate: this.rating,
-      UserID: this.userID,
-      Date: new Date().toJSON()
+      Author_ID: this.userID,
+      Location: location,
+      ReviewContent: this.review,
+      PlaceRate: this.rating,
+      Photos: photos,
+      Comments: null
     }
 
     console.log(this.reviewData);

@@ -1,15 +1,15 @@
-<mat-card *ngIf="locationDetail; else elseTemplate" class="matcard-container">
+<mat-card class="matcard-container">
     <mat-card-header>
         <div mat-card-avatar>
-            <img class="matcard-avatar" src="https://material.angular.io/assets/img/examples/shiba2.jpg">
+            <img class="matcard-avatar" [src]="review.Author.Picture">
         </div>
 
-        <mat-card-title>{{locationDetail.name | uppercase}}</mat-card-title>
-        <mat-card-subtitle>{{ review.LocationName }}</mat-card-subtitle>
+        <mat-card-title>{{ review.Location.Name | uppercase}}</mat-card-title>
+        <mat-card-subtitle>{{ review.Location.Address }}</mat-card-subtitle>
     </mat-card-header>
 
     <div mat-card-image class="matcard-image-container">
-        <div class="scrolling-wrapper" [style.height]="heightTo">
+        <div class="scrolling-wrapper">
             <div *ngIf="!imageReady" class="viewer spinner">
                 <mat-spinner style="margin: auto;"></mat-spinner>
             </div>
@@ -18,15 +18,13 @@
                 <img [src]="image" (load)="onImageReady()" />
             </div>
             <div #imageTag class="viewer" [style.transform]="moveTo">
-                <agm-map #map class="google-map" [zoom]="13" [latitude]="locationDetail.geometry.location.lat"
-                    [longitude]="locationDetail.geometry.location.lng" [gestureHandling]="'none'"
-                    [zoomControlOptions]="zoomOption" [streetViewControl]="false"
-                    (mapReady)="mapReady(infoWindow, $event)">
-                    <agm-marker [latitude]="locationDetail.geometry.location.lat"
-                        [longitude]="locationDetail.geometry.location.lng" [label]="'A'"
+                <agm-map #map class="google-map" [zoom]="13" [latitude]="review.Location.Lat"
+                    [longitude]="review.Location.Lng" [gestureHandling]="'none'" [zoomControlOptions]="zoomOption"
+                    [streetViewControl]="false" (mapReady)="mapReady(infoWindow, $event)">
+                    <agm-marker [latitude]="review.Location.Lat" [longitude]="review.Location.Lng" [label]="'A'"
                         (markerClick)="clickEvent(infoWindow, $event)">
                         <agm-info-window #infoWindow [disableAutoPan]="false">
-                            <p>{{locationDetail.name}}</p>
+                            <p>{{review.Location.Name}}</p>
                         </agm-info-window>
                     </agm-marker>
                 </agm-map>
@@ -39,8 +37,12 @@
             <fa-icon [icon]="faChevronCircleRight" size="2x"></fa-icon>
         </button>
         <div style="display: flex; justify-content: center; margin: 0; padding: 0;">
-            <mat-icon *ngFor="let c of count;let i = index" [style.color]="moveCount == i ? '#29487d' : '#bdbdbd'"
-                style="margin: 0; padding: 0; font-size: 15px;" (click)="moveCountChange(i)">{{i == count.length - 1 ? 'place' : 'minimize'}}</mat-icon>
+            <mat-icon *ngFor="let p of review.Photos; let i = index"
+                [style.color]="moveCount == i ? '#29487d' : '#bdbdbd'" style="margin: 0; padding: 0; font-size: 15px;"
+                (click)="moveCountChange(i)">minimize</mat-icon>
+            <mat-icon [style.color]="moveCount == review.Photos.length ? '#29487d' : '#bdbdbd'"
+                style="margin: 0; padding: 0; font-size: 15px;" (click)="moveCountChange(review.Photos.length)">
+                place</mat-icon>
         </div>
     </div>
 
@@ -48,25 +50,20 @@
         <div style="font-size: 12px; color: #bdbdbd;">
             <div style="display: flex; justify-content: flex-end;">
                 <p style="margin: 11px; padding: 0;">Author Rating: </p>
-                <star-rating style="margin: 0; padding: 0;" value="{{review.Rate}}" checkedcolor="gold"
+                <star-rating style="margin: 0; padding: 0;" value="{{review.PlaceRate}}" checkedcolor="gold"
                     uncheckedcolor="#bdbdbd" size="23px" readonly="true"></star-rating>
-                <p style="margin: 11px; padding: 0;">{{review.Rate}} / 5</p>
+                <p style="margin: 11px; padding: 0;">{{review.PlaceRate}} / 5</p>
             </div>
             <div style="display: flex; justify-content: flex-end;">
-                <p style="margin: 0px; padding: 0;">Written: {{ writtenDate}}</p>
+                <p style="margin: 0px; padding: 0;">Written: {{ localeDate }}</p>
             </div>
         </div>
         <p>
-            {{review.Review}}
+            {{review.ReviewContent}}
         </p>
     </mat-card-content>
-    <mat-card-actions>
+    <!-- <mat-card-actions>
         <button mat-button>LIKE</button>
         <button mat-button>SHARE</button>
-    </mat-card-actions>
+    </mat-card-actions> -->
 </mat-card>
-<ng-template #elseTemplate>
-    <div style="padding: 300px 0 300px 0;">
-        <mat-spinner style="margin: auto;"></mat-spinner>
-    </div>
-</ng-template>

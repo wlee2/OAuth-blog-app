@@ -1,0 +1,21 @@
+@keyframes example {
+  0% {
+    color: #38578dc9;
+  }
+  50% {
+    color: #29487d;
+  }
+  100% {
+    color: #38578dc9;
+  }
+}
+
+.loading {
+  padding-top: 200px;
+  display: flex;
+  justify-content: center;
+  .loading-icon {
+    font-size: 60px;
+    animation: example 2s infinite;
+  }
+}

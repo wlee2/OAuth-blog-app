@@ -48,7 +48,7 @@ export class AuthHelperService {
   }
 
   login(data) {
-    this.store.dispatch(login({ ID: data.ID, Name: data.Name, Picture: data.Picture, Gender: data.Gender }));
+    this.store.dispatch(login({ ID: data.UserID, Name: data.Name, Picture: data.Picture, Gender: data.Gender }));
     this.loginSucceed(data.Name);
   }
 

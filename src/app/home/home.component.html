@@ -1,4 +1,9 @@
-<div >
+<div *ngIf="reviewData; else elseTemplate">
     <app-blog *ngFor="let review of reviewData" [review]="review"></app-blog>
 </div>
-<p>home work</p>
+
+<ng-template #elseTemplate>
+    <div class="loading">
+        <fa-icon class="loading-icon" [icon]="faMapMarkedAlt"></fa-icon>
+    </div>
+</ng-template>
