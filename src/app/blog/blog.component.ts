@@ -72,6 +72,9 @@ export class BlogComponent implements OnInit {
   }
 
   ngOnInit() {
+    if(this.review.Photos.length == 0) {
+      this.imageReady = true;
+    }
     this.images = this.review.Photos.map((photo, index) => {
       return this.googlePlaceService.getPlacePhotoURL(photo.PhotoReference);
     })

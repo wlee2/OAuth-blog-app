@@ -40,8 +40,8 @@ export class ReviewService {
     this.router.navigate(['/']);
   }
 
-  getReviewData(): Observable<any> {
-    const url = `https://${window.location.hostname}:44368/api/reviews`;
+  getReviewData(pagination: number): Observable<any> {
+    const url = `https://${window.location.hostname}:44368/api/reviews?pagination=${pagination}`;
     return this.http.get(url)
       .pipe(
         catchError(this.handleError)

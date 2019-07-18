@@ -87,9 +87,12 @@ export class WriteReviewComponent implements OnInit {
 
     const photos : Photo[] = [];
 
-    this.selectedData["photos"].forEach(photo => {
-      photos.push(new Photo(photo["photo_reference"]));
-    });
+    if(this.selectedData["photos"]) {
+      this.selectedData["photos"].forEach(photo => {
+        photos.push(new Photo(photo["photo_reference"]));
+      });
+    }
+
 
     this.reviewData = {
       Author_ID: this.userID,
