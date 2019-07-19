@@ -38,8 +38,8 @@ import { RatingModule } from 'ng-starrating';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     HttpClientModule,
+    AppRoutingModule,
     FormsModule,
     FontAwesomeModule,
     BrowserAnimationsModule,

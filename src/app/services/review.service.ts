@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { ReviewData, ReviewModel } from '../classes/ReviewData';
+import { ReviewData } from '../classes/ReviewData';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, retry } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 
@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 export class ReviewService {
 
   private handleError(error: HttpErrorResponse) {
+    window.alert(error.status + error.message);
     if (error.error instanceof ErrorEvent) {
       // 클라이언트나 네트워크 문제로 발생한 에러.
       console.error('An error occurred:', error.error.message);
@@ -40,17 +41,19 @@ export class ReviewService {
     this.router.navigate(['/']);
   }
 
+  //10896
   getReviewData(pagination: number): Observable<any> {
-    const url = `https://${window.location.hostname}:44368/api/reviews?pagination=${pagination}`;
-    return this.http.get(url)
+    let getUrl = `https://${window.location.hostname}:44368/api/reviews?pagination=${pagination}`;
+    return this.http.get(getUrl)
       .pipe(
+        retry(3),
         catchError(this.handleError)
       );
   }
 
   postReviewData(reviewData: ReviewData): Observable<any> {
-    const url = `https://${window.location.hostname}:44368/api/reviews`;
-    return this.http.post(url, reviewData)
+    let postUrl = `https://${window.location.hostname}:44368/api/reviews`;
+    return this.http.post(postUrl, reviewData)
       .pipe(
         catchError(this.handleError)
       );

@@ -3,7 +3,7 @@ import { Observable, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { CurrentLocationService } from './current-location.service';
 import { catchError } from 'rxjs/operators';
-import { basicHeader, httpOptions } from '../common/header-options';
+import { httpOptions } from '../common/header-options';
 import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
@@ -32,6 +32,10 @@ export class GooglePlaceService {
     private currentLocation: CurrentLocationService,
     private cookieService: CookieService
   ) {
+    
+  }
+
+  startGetGeoLocation() {
     this.currentLocation.getCurrentLocation.subscribe(
       (position: Position) => {
         this.position = position;

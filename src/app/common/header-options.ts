@@ -7,8 +7,7 @@ export const PostHttpOptions = (token) => {
                 {
                     'Content-Type': 'application/json;x-www-form-urlencoded',
                     'Authorization': `Bearer ${token}`
-                }),
-        withCredentials: true,
+                })
     }
 };
 
@@ -19,17 +18,6 @@ export const httpOptions = (token) => {
                 {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
-                }),
-        withCredentials: true,
-    }
-};
-
-export const basicHeader = () => {
-    return {
-        headers:
-            new HttpHeaders(
-                {
-                    "Access-Control-Allow-Origin" : "*"
-                }),
+                })
     }
 };

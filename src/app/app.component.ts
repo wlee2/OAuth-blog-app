@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { login } from './store/user.action';
 import { AuthHelperService } from './services/auth-helper.service';
 import { CookieService } from 'ngx-cookie-service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
+import { ReviewModel } from './classes/ReviewData';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +13,7 @@ import { Observable } from 'rxjs';
 export class AppComponent {
   title = 'OAuth-blog-app';
   isLogin : boolean = false;
+  reviewData: ReviewModel[];
 
   constructor(
     private route: ActivatedRoute,
@@ -23,31 +23,36 @@ export class AppComponent {
     this.authHelper.Name$.subscribe(check => {
       if(check) this.isLogin = true;
       else this.isLogin = false;
-    })
+    });
+
+    this.iosTrick();
+  }
+
+  iosTrick() {
+    if(!this.cookieService.check("iosTrick")) {
+      this.cookieService.set("iosTrick", "true")
+      window.location.href = `https://${window.location.hostname}:44368/api/reviews/handshake?redirectURL=${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
+    } 
   }
 
   ngOnInit() {
-    this.hashToCookie.subscribe(
-      next => {
-        if(next && !this.isLogin) {
-          this.authHelper.getUserInfo().subscribe(
-            user => {
-              this.authHelper.login(user);
-            },
-            err => {
-              console.error(err);
-              this.cookieService.delete('access_token');
-            }
-          )
-        }
-      },
-      err => {
-        console.error(err);
-      }
-    )
+    this.checkHash();
   }
 
-  hashToCookie = new Observable(observer => {
+  checklogin() {
+    if(this.cookieService.check('access_token')) {
+      this.authHelper.getUserInfo().subscribe(
+        user => {
+          this.authHelper.login(user);
+        },
+        err => {
+          this.cookieService.delete('access_token');
+        }
+      )
+    }
+  }
+
+  checkHash() {
     this.route.fragment.subscribe(hash => {
       if (hash) {
         try {
@@ -58,11 +63,10 @@ export class AppComponent {
           this.cookieService.set('access_token', tokenFromHash, expires_in);
         }
         catch (err) {
-          observer.error(err);
+          console.error(err);
         }
       }
-      observer.next(this.cookieService.check('access_token'));
+      this.checklogin();
     });
-  });
-
+  }
 }

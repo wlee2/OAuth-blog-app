@@ -60,6 +60,14 @@ export class AuthHelperService {
       );
   }
 
+  handshake(): Observable<any> {
+    const shakeUrl = `https://${window.location.hostname}:44368/api/reviews/handshake?redirectURL=${window.location.protocol}://${window.location.hostname}:${window.location.port}`;
+    return this.http.get(shakeUrl)
+    .pipe(
+      catchError(this.handleError)
+    )
+  }
+
   constructor(
     private http: HttpClient,
     private store: Store<{ user: string }>,

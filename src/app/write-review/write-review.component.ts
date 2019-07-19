@@ -1,13 +1,10 @@
-import { Component, OnInit, ViewChild, QueryList } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { GooglePlaceService } from '../services/google-place.service';
-import { AgmMap, AgmInfoWindow } from '@agm/core';
 import { ControlPosition } from '@agm/core/services/google-maps-types';
 import { ReviewData, Location, Photo } from '../classes/ReviewData';
 import { Observable } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { ReviewService } from '../services/review.service';
-import { Router } from '@angular/router';
-
 @Component({
   selector: 'app-write-review',
   templateUrl: './write-review.component.html',
@@ -43,6 +40,7 @@ export class WriteReviewComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.googlePlaceService.startGetGeoLocation();
   }
 
   autocomplete(event) {

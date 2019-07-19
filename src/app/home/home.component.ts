@@ -2,6 +2,7 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { ReviewService } from '../services/review.service';
 import { ReviewModel } from '../classes/ReviewData';
 import { faMapMarkedAlt } from '@fortawesome/free-solid-svg-icons';
+import { GooglePlaceService } from '../services/google-place.service';
 
 @Component({
   selector: 'app-home',
@@ -22,14 +23,9 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.reviewService.getReviewData(this.pagination).subscribe(
-      data => {
-        this.reviewData = JSON.parse(data);
-      },
-      err => {
-        window.alert(err);
-      }
-    )
+    if(!this.reviewData) {
+      this.getData();
+    }
   }
 
   @HostListener('window:scroll', ['$event']) // for window scroll events
@@ -53,6 +49,17 @@ export class HomeComponent implements OnInit {
         )
         console.log("update", this.reviewData);
       }
+  }
+
+  getData() {
+    this.reviewService.getReviewData(this.pagination).subscribe(
+      data => {
+        this.reviewData = JSON.parse(data);
+      },
+      err => {
+        window.alert(err);
+      }
+    );
   }
 
 }
