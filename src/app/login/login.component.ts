@@ -1,11 +1,9 @@
 import { Component, OnInit, SimpleChanges } from '@angular/core';
-import { faFacebookSquare } from '@fortawesome/free-brands-svg-icons';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { faFacebookSquare, faGoogle } from '@fortawesome/free-brands-svg-icons';
+import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import { AuthHelperService } from '../services/auth-helper.service';
-import { Store, select, State } from '@ngrx/store';
-import { logout, login, test } from '../store/user.action';
+import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -13,15 +11,15 @@ import { tap } from 'rxjs/operators';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  facebookIcon = faFacebookSquare;
-  userIcon = faUser;
+  faFacebookSquare = faFacebookSquare;
+  faGoogle = faGoogle
+  faUserCircle = faUserCircle;
   Name$: Observable<string>;
   Picture$: Observable<string>;
 
-  baseUrl = `https://${window.location.hostname}:44368/api/Account/ExternalLogin?provider=Facebook&response_type=token&client_id=self&redirect_uri=`;
-
-  tryExternalLogin() {
-    window.location.replace(`${this.baseUrl}${window.location.protocol}//${window.location.hostname}:${window.location.port}/`);
+  externalLogin(provider: string) {
+    let baseUrl = `https://${window.location.hostname}:44368/api/Account/ExternalLogin?provider=${provider}&response_type=token&client_id=self&redirect_uri=`;
+    window.location.replace(`${baseUrl}${window.location.protocol}//${window.location.hostname}:${window.location.port}/`);
   }
 
   logout() {

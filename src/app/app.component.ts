@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { AuthHelperService } from './services/auth-helper.service';
 import { CookieService } from 'ngx-cookie-service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, config } from 'rxjs';
 import { ReviewModel } from './classes/ReviewData';
 
 @Component({
@@ -25,12 +25,16 @@ export class AppComponent {
       else this.isLogin = false;
     });
 
-    this.iosTrick();
+    if(navigator.platform == "iPhone" || navigator.platform == "iPad") {
+      this.iosTrick();
+    }
   }
 
+  // when the back-end server is c# based .net framework
   iosTrick() {
     if(!this.cookieService.check("iosTrick")) {
       this.cookieService.set("iosTrick", "true")
+      // handshake function
       window.location.href = `https://${window.location.hostname}:44368/api/reviews/handshake?redirectURL=${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
     } 
   }

@@ -58,7 +58,7 @@ export class GooglePlaceService {
 
   getPlaceDetail(id: string): Observable<any> {
     const url = `https://${window.location.hostname}:44368/api/Place/Detail?id=${id}`;
-    return this.http.get(url)
+    return this.http.get(url, httpOptions(this.cookieService.get("access_token")))
       .pipe(
         catchError(this.handleError)
       );

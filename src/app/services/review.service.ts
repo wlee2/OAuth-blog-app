@@ -41,7 +41,6 @@ export class ReviewService {
     this.router.navigate(['/']);
   }
 
-  //10896
   getReviewData(pagination: number): Observable<any> {
     let getUrl = `https://${window.location.hostname}:44368/api/reviews?pagination=${pagination}`;
     return this.http.get(getUrl)
@@ -54,6 +53,14 @@ export class ReviewService {
   postReviewData(reviewData: ReviewData): Observable<any> {
     let postUrl = `https://${window.location.hostname}:44368/api/reviews`;
     return this.http.post(postUrl, reviewData)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  deleteReviewData(id: number): Observable<any> {
+    let postUrl = `https://${window.location.hostname}:44368/api/reviews/${id}`;
+    return this.http.delete(postUrl)
       .pipe(
         catchError(this.handleError)
       );

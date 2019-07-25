@@ -1,18 +1,30 @@
 @import '../styles/color';
 
 .facebook-login {
-    background-color: white;
-    color: $facebook-color;
-    font-size: 18px;
+    font-weight: bold;
+    fa-icon {
+        font-size: 20px;
+        color: $facebook-color;
+    }
+}
+.google-login {
+    font-weight: bold;
+    fa-icon {
+        font-size: 18px;
+        color: red;
+    }
 }
 
 .user-status {
-    font-size: 18px;
-    font-weight: bold;
+    height: 45px;
+    width: 45px;
 }
 
 .user-avatar {
-    border-radius: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
 }
 
 .menu-item {

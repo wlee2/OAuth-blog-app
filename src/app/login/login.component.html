@@ -1,5 +1,5 @@
 <ng-container *ngIf="(Name$ | async)!; else elseTemplate">
-    <button mat-button class="user-status" [matMenuTriggerFor]="menu">
+    <button mat-icon-button class="user-status" [matMenuTriggerFor]="menu">
         <img class="user-avatar" src="{{ Picture$ | async }}" />
     </button>
     <mat-menu #menu="matMenu">
@@ -8,8 +8,15 @@
     </mat-menu>
 </ng-container>
 <ng-template #elseTemplate>
-
-
-    <button class="facebook-login" mat-raised-button (click)="tryExternalLogin()">Facebook &nbsp;<fa-icon
-        [icon]="facebookIcon" size="lg"></fa-icon></button>
+    <button mat-icon-button class="user-status" [matMenuTriggerFor]="loginMenu">
+        <mat-icon>person</mat-icon>
+    </button>
+    <mat-menu #loginMenu="matMenu">
+        <button mat-menu-item class="google-login" (click)="externalLogin('Google')">
+            <fa-icon [icon]="faGoogle" size="lg"></fa-icon> &nbsp; Google
+        </button>
+        <button mat-menu-item class="facebook-login" (click)="externalLogin('Facebook')">
+            <fa-icon [icon]="faFacebookSquare" size="lg"></fa-icon> &nbsp; Facebook
+        </button>
+    </mat-menu>
 </ng-template>

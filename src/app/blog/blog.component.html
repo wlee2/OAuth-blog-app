@@ -6,6 +6,20 @@
 
         <mat-card-title>{{ review.Location.Name | uppercase}}</mat-card-title>
         <mat-card-subtitle>{{ review.Location.Address }}</mat-card-subtitle>
+        <div class="spacer"></div>
+        <button mat-icon-button [matMenuTriggerFor]="menu" [disabled]="userValidate">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="delete()">
+                <mat-icon>delete</mat-icon>
+                <span>Delete</span>
+            </button>
+            <button mat-menu-item disabled>
+                <mat-icon>edit</mat-icon>
+                <span>Edit</span>
+            </button>
+        </mat-menu>
     </mat-card-header>
 
     <div mat-card-image class="matcard-image-container">

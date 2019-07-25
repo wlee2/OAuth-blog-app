@@ -3,6 +3,9 @@ import { faChevronCircleLeft, faChevronCircleRight } from '@fortawesome/free-sol
 import { ControlPosition } from '@agm/core/services/google-maps-types';
 import { ReviewModel } from '../classes/ReviewData';
 import { GooglePlaceService } from '../services/google-place.service';
+import { Store, select } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { ReviewService } from '../services/review.service';
 
 @Component({
   selector: 'app-blog',
@@ -19,6 +22,8 @@ export class BlogComponent implements OnInit {
   moveCount: number = 0;
   moveTo;
   dynamicWidth;
+  ID$: Observable<any>;
+  userValidate = false;
 
   zoomOption = {
     position: ControlPosition.RIGHT_CENTER
@@ -27,6 +32,7 @@ export class BlogComponent implements OnInit {
   @Input() review: ReviewModel;
   images = [];
   localeDate;
+
 
   imageToRight() {
     if (this.moveCount < this.images.length) {
@@ -71,6 +77,12 @@ export class BlogComponent implements OnInit {
     }
   }
 
+  delete() {
+    this.reviewService.deleteReviewData(this.review.ID).subscribe(ok => {
+      location.reload();
+    })
+  }
+
   ngOnInit() {
     if(this.review.Photos.length == 0) {
       this.imageReady = true;
@@ -79,11 +91,20 @@ export class BlogComponent implements OnInit {
       return this.googlePlaceService.getPlacePhotoURL(photo.PhotoReference);
     })
     this.localeDate = new Date(this.review.WrittenDate).toLocaleDateString();
+
+    this.ID$.subscribe(id => {
+      if(this.review.Author.ID == id) {
+        this.userValidate = true;
+      }
+    })
   }
 
   constructor(
-    private googlePlaceService: GooglePlaceService
-  ) {
-  }
+    private googlePlaceService: GooglePlaceService,
+    private store: Store<{user: string}>,
+    private reviewService: ReviewService
+    ) {
+      this.ID$ = store.pipe(select('user')).pipe(select('ID'));
+    }
 
 }
