@@ -2,7 +2,6 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { ReviewService } from '../services/review.service';
 import { ReviewModel } from '../classes/ReviewData';
 import { faMapMarkedAlt } from '@fortawesome/free-solid-svg-icons';
-import { GooglePlaceService } from '../services/google-place.service';
 
 @Component({
   selector: 'app-home',
@@ -16,6 +15,7 @@ export class HomeComponent implements OnInit {
   pagination = 0;
   scrollFunction;
   wait = false;
+  dataIsEnd = false;
 
   constructor(
     private reviewService: ReviewService
@@ -38,12 +38,15 @@ export class HomeComponent implements OnInit {
         this.wait = true;
         this.reviewService.getReviewData(this.pagination).subscribe(
           data => {
-            const result = JSON.parse(data);
+            const result = data;
             if(result.length !== 0) {
               result.forEach(e => {
                 this.reviewData.push(e);
               });
               this.wait = false;
+            }
+            if(result.length < 5){
+              this.dataIsEnd = true;
             }
           }
         )
@@ -54,7 +57,7 @@ export class HomeComponent implements OnInit {
   getData() {
     this.reviewService.getReviewData(this.pagination).subscribe(
       data => {
-        this.reviewData = JSON.parse(data);
+        this.reviewData = data;
       },
       err => {
         window.alert(err);

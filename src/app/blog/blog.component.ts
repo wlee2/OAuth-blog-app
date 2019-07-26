@@ -22,8 +22,7 @@ export class BlogComponent implements OnInit {
   moveCount: number = 0;
   moveTo;
   dynamicWidth;
-  ID$: Observable<any>;
-  userValidate = false;
+  userValidate = true;
 
   zoomOption = {
     position: ControlPosition.RIGHT_CENTER
@@ -84,7 +83,7 @@ export class BlogComponent implements OnInit {
   }
 
   ngOnInit() {
-    if(this.review.Photos.length == 0) {
+    if (this.review.Photos.length == 0) {
       this.imageReady = true;
     }
     this.images = this.review.Photos.map((photo, index) => {
@@ -92,19 +91,25 @@ export class BlogComponent implements OnInit {
     })
     this.localeDate = new Date(this.review.WrittenDate).toLocaleDateString();
 
-    this.ID$.subscribe(id => {
-      if(this.review.Author.ID == id) {
+    this.store.pipe(select('user')).pipe(select('ID')).subscribe(id => {
+      console.log(id, this.review.Author.UserID)
+      if (this.review.Author.UserID == id) {
+        this.userValidate = false;
+      }
+      else {
         this.userValidate = true;
       }
-    })
+    });
   }
+
+
 
   constructor(
     private googlePlaceService: GooglePlaceService,
-    private store: Store<{user: string}>,
+    private store: Store<{ user: string }>,
     private reviewService: ReviewService
-    ) {
-      this.ID$ = store.pipe(select('user')).pipe(select('ID'));
-    }
+  ) {
+   
+  }
 
 }

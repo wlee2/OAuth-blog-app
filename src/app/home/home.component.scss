@@ -1,21 +1,31 @@
 @keyframes example {
   0% {
-    color: #38578dc9;
+    color: #38578d79;
   }
   50% {
     color: #29487d;
   }
   100% {
-    color: #38578dc9;
+    color: #38578d79;
   }
 }
 
-.loading {
-  padding-top: 200px;
+.pre-loading {
+  padding: 200px 0 100px 0;
   display: flex;
   justify-content: center;
   .loading-icon {
     font-size: 60px;
-    animation: example 2s infinite;
+    animation: example 2s infinite ease-in-out;
+  }
+}
+
+.data-loading {
+  padding: 5px 0 50px 0;
+  display: flex;
+  justify-content: center;
+  .loading-icon {
+    font-size: 60px;
+    animation: example 1s infinite ease-in-out;
   }
 }

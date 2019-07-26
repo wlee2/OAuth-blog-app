@@ -10,13 +10,13 @@
   }
 
   .matcard-avatar {
-    height: 50px;
-    width: 50px;
+    height: 40px;
+    width: 40px;
     border-radius: 50%;
   }
 
   .matcard-image-container {
-    margin-bottom: 40px;
+    margin-bottom: 5px;
     position: relative;
     height: 400px;
     @media screen and (max-width: $media-max-break) {
@@ -29,6 +29,9 @@
       color: #acacacbb;
       opacity: 0.8;
     }
+  }
+  .mat-card-content {
+    margin: 10px;
   }
 }
 
@@ -74,6 +77,13 @@
   padding: 100px 0 150px 0;
 }
 
+.navigation {
+  button {
+    height: 8px;
+    width: 8px;
+    margin-right: 5px;
+  }
+}
 
 @import '../styles/layout';
 

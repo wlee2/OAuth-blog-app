@@ -25,6 +25,7 @@ export const userReducer = createReducer(
   })),
   on(logout, state => ({
     ...state,
+    ID: null,
     Name: null,
     Picture: null,
     Gender: null

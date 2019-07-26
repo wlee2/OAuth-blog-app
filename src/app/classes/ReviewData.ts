@@ -41,7 +41,7 @@ export class ReviewModel {
 }
 
 export class AuthorModel {
-  ID: string;
+  UserID: string;
   Name: string;
   Gender: string;
   Picture: string;

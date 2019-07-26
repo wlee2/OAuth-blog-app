@@ -4,11 +4,15 @@
             <img class="matcard-avatar" [src]="review.Author.Picture">
         </div>
 
-        <mat-card-title>{{ review.Location.Name | uppercase}}</mat-card-title>
-        <mat-card-subtitle>{{ review.Location.Address }}</mat-card-subtitle>
+        <mat-card-title style="font-size: 18px;">{{ review.Location.Name}}</mat-card-title>
+        <mat-card-subtitle style="font-size: 12px;">{{ review.Location.Address }}</mat-card-subtitle>
         <div class="spacer"></div>
+        <button mat-icon-button [style.color]="moveCount == review.Photos.length ? '#29487d' : ''"
+            (click)="moveCountChange(review.Photos.length)">
+            <mat-icon>place</mat-icon>
+        </button>
         <button mat-icon-button [matMenuTriggerFor]="menu" [disabled]="userValidate">
-            <mat-icon>more_vert</mat-icon>
+            <mat-icon>more_horiz</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
             <button mat-menu-item (click)="delete()">
@@ -50,31 +54,36 @@
         <button *ngIf="moveCount < images.length" class="move-button right" mat-button (click)="imageToRight()">
             <fa-icon [icon]="faChevronCircleRight" size="2x"></fa-icon>
         </button>
-        <div style="display: flex; justify-content: center; margin: 0; padding: 0;">
-            <mat-icon *ngFor="let p of review.Photos; let i = index"
-                [style.color]="moveCount == i ? '#29487d' : '#bdbdbd'" style="margin: 0; padding: 0; font-size: 15px;"
-                (click)="moveCountChange(i)">minimize</mat-icon>
-            <mat-icon [style.color]="moveCount == review.Photos.length ? '#29487d' : '#bdbdbd'"
-                style="margin: 0; padding: 0; font-size: 15px;" (click)="moveCountChange(review.Photos.length)">
-                place</mat-icon>
+    </div>
+
+    <div style="display: grid; grid-template: 40px / 1fr 200px 1fr;">
+        <div style="color: gray;">
+            <button mat-icon-button>
+                <mat-icon>thumb_up_alt</mat-icon>
+            </button>
+            <span>5</span>
+        </div>
+        <div class="navigation" style="text-align: center">
+            <button mat-icon-button *ngFor="let p of review.Photos; let i = index"
+                [style.background-color]="moveCount == i ? '#29487d' : '#bdbdbd'" (click)="moveCountChange(i)"></button>
+        </div>
+        <div style="color: gray; text-align: end;">
+
         </div>
     </div>
 
     <mat-card-content>
-        <div style="font-size: 12px; color: #bdbdbd;">
-            <div style="display: flex; justify-content: flex-end;">
-                <p style="margin: 11px; padding: 0;">Author Rating: </p>
-                <star-rating style="margin: 0; padding: 0;" value="{{review.PlaceRate}}" checkedcolor="gold"
-                    uncheckedcolor="#bdbdbd" size="23px" readonly="true"></star-rating>
-                <p style="margin: 11px; padding: 0;">{{review.PlaceRate}} / 5</p>
-            </div>
-            <div style="display: flex; justify-content: flex-end;">
-                <p style="margin: 0px; padding: 0;">Written: {{ localeDate }}</p>
-            </div>
+        <div>
+            <p>
+                <span style="font-weight: bold; color:gray">{{review.Author.Name}}</span>
+                <star-rating value="{{review.PlaceRate}}" checkedcolor="gold" uncheckedcolor="#bdbdbd" size="18px"
+                    readonly="true"></star-rating>
+                <span>{{review.ReviewContent}}</span>
+            </p>
         </div>
-        <p>
-            {{review.ReviewContent}}
-        </p>
+        <div>
+            <span style="color: gray; font-size: 12px;">{{ localeDate }}</span>
+        </div>
     </mat-card-content>
     <!-- <mat-card-actions>
         <button mat-button>LIKE</button>
