@@ -1,7 +1,9 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { ReviewService } from '../services/review.service';
-import { ReviewModel } from '../classes/ReviewData';
+import { ReviewModel, ReviewData } from '../classes/ReviewData';
 import { faMapMarkedAlt } from '@fortawesome/free-solid-svg-icons';
+import { Store, select } from '@ngrx/store';
+import { initReviewData, addReviewData, setPage, dataIsEnd } from '../store/user.action';
 
 @Component({
   selector: 'app-home',
@@ -18,8 +20,26 @@ export class HomeComponent implements OnInit {
   dataIsEnd = false;
 
   constructor(
-    private reviewService: ReviewService
+    private reviewService: ReviewService,
+    private store: Store<{ user: string }>,
   ) {
+    this.store.pipe(select('user')).pipe(select('ReviewData')).subscribe(
+      data => {
+        this.reviewData = data;
+      }
+    )
+
+    this.store.pipe(select('user')).pipe(select('Page')).subscribe(
+      page => {
+        this.pagination = page;
+      }
+    )
+
+    this.store.pipe(select('user')).pipe(select('DataIsEnd')).subscribe(
+      dataIsEnd => {
+        this.dataIsEnd = dataIsEnd;
+      }
+    )
   }
 
   ngOnInit() {
@@ -33,20 +53,18 @@ export class HomeComponent implements OnInit {
     const documentHeight = document.body.scrollHeight - document.body.clientHeight + 100;
       //var percent = window.scrollY / documentHeight * 100;
       const dif = documentHeight - window.scrollY;
-      if (dif < 700 && this.reviewData && !this.wait) {
+      if (dif < 700 && this.reviewData && !this.wait && !this.dataIsEnd) {
         this.pagination++;
+        this.store.dispatch(setPage({page: this.pagination}));
         this.wait = true;
         this.reviewService.getReviewData(this.pagination).subscribe(
           data => {
-            const result = data;
-            if(result.length !== 0) {
-              result.forEach(e => {
-                this.reviewData.push(e);
-              });
+            if(data.length !== 0) {
+              this.store.dispatch(addReviewData({reviewData: data}));
               this.wait = false;
             }
-            if(result.length < 5){
-              this.dataIsEnd = true;
+            if(data.length < 5) {
+              this.store.dispatch(dataIsEnd({dataIsEnd: true}));
             }
           }
         )
@@ -57,7 +75,7 @@ export class HomeComponent implements OnInit {
   getData() {
     this.reviewService.getReviewData(this.pagination).subscribe(
       data => {
-        this.reviewData = data;
+        this.store.dispatch(initReviewData({reviewData: data}));
       },
       err => {
         window.alert(err);

@@ -1,17 +1,17 @@
 <div *ngIf="reviewData; else elseTemplate">
     <app-blog *ngFor="let review of reviewData" [review]="review"></app-blog>
-    <div *ngIf="!dataIsEnd; else dataEnd">
+    <div *ngIf="!dataIsEnd">
         <div class="data-loading">
             <fa-icon class="loading-icon" [icon]="faMapMarkedAlt"></fa-icon>
         </div>
     </div>
-    <ng-template #dataEnd>
-        <mat-toolbar style="justify-content: center; background-color: #29487d; color: white;">End</mat-toolbar>
-    </ng-template>
+
 </div>
 <ng-template #elseTemplate>
     <div class="pre-loading">
         <fa-icon class="loading-icon" [icon]="faMapMarkedAlt"></fa-icon>
     </div>
-    <p style="text-align: center; color: gray;">MaPlace</p>
 </ng-template>
+<div>
+    <p style="text-align: center; color: gray; padding-bottom: 50px;">MaPlace</p>
+</div>

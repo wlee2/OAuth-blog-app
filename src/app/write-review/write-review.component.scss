@@ -11,3 +11,11 @@
 mat-form-field {
   margin-right: 12px;
 }
+
+.panel-body {
+  .mat-expansion-panel-content{
+    .mat-expansion-panel-body{
+      padding: 0 !important;
+    }
+  }
+}

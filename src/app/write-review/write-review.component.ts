@@ -5,6 +5,7 @@ import { ReviewData, Location, Photo } from '../classes/ReviewData';
 import { Observable } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { ReviewService } from '../services/review.service';
+import { initReviewData } from '../store/user.action';
 @Component({
   selector: 'app-write-review',
   templateUrl: './write-review.component.html',
@@ -75,6 +76,8 @@ export class WriteReviewComponent implements OnInit {
   }
 
   submit() {
+    const viewportmeta = document.querySelector('meta[name=viewport]');
+    viewportmeta.setAttribute('content', "width=device-width, initial-scale=0");
     const location : Location = {
       Reference: this.selectedData["reference"],
       Name: this.selectedData["name"],
@@ -104,6 +107,9 @@ export class WriteReviewComponent implements OnInit {
     console.log(this.reviewData);
     this.reviewService.postReviewData(this.reviewData).subscribe(
       res => {
+        this.reviewService.getReviewData(0).subscribe(data => {
+          this.store.dispatch(initReviewData({reviewData: data}))
+        })
         this.reviewService.postSucceed();
       },
       err => {

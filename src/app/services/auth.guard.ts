@@ -12,12 +12,12 @@ export class AuthGuard implements CanActivate {
   isLoggedIn: boolean = false;
 
   constructor(
-    private authService: AuthHelperService, 
-    private router: Router, 
+    private authService: AuthHelperService,
+    private router: Router,
     private _snackBar: MatSnackBar
-    ) { 
+  ) {
     this.authService.Name$.subscribe(res => {
-      if(res){
+      if (res) {
         this.isLoggedIn = true;
       }
       else {
@@ -29,17 +29,20 @@ export class AuthGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    window.scrollTo(0, 0);
     return this.checkLogin();
   }
 
   checkLogin(): boolean {
-    if(this.isLoggedIn) {
+    if (this.isLoggedIn) {
       return true;
     }
 
-    this._snackBar.open("Login Required!","OK", {
+    this._snackBar.open("Login Required!", "OK", {
       duration: 2000,
     });
+
+
 
     // Navigate to the login page with extras
     this.router.navigate(['/']);

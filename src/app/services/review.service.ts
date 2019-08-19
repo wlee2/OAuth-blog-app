@@ -41,9 +41,9 @@ export class ReviewService {
     this.router.navigate(['/']);
   }
 
-  getReviewData(pagination: number): Observable<any> {
+  getReviewData(pagination: number): Observable<ReviewData[]> {
     let getUrl = `https://${window.location.hostname}:44368/api/reviews?pagination=${pagination}`;
-    return this.http.get(getUrl)
+    return this.http.get<ReviewData[]>(getUrl)
       .pipe(
         retry(3),
         catchError(this.handleError)
